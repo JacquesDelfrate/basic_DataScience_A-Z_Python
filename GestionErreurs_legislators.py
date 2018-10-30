@@ -118,9 +118,30 @@ f_name = [name for name,number in name_counts.items() if number == max_value]
 print(f_name)
 
 
-# Training
-  # 
-
+'''                        Training                        '''
+# Create empty dictionnary
+male_name_count = {}
+# Compute how many occurence for each name
+for x, name in enumerate(first_name):
+    if gender[x] == 'M' and birth_year[x] > 1940:
+        if name in male_name_count:
+            male_name_count[name] += 1
+        else:
+            male_name_count[name] = 1
+# find a name where there is max occurence
+    # first way
+max_count_man = None
+for k in male_name_count:
+    if max_count_man is None or male_name_count[k] > max_count_man:
+        max_count_man = male_name_count[k]
+    # 2nd way 
+top_male_count = max(male_name_count.values())
+    # check for consistency between 2 methods --> should be True
+print(max_count_man==top_male_count)
+# Add name keys with value = top_male_count to top_male_names
+top_male_names = [name for name, number in male_name_count.items() if number == top_male_count]
+ 
+print(top_male_names)       
 '''                     test set/add/remove and list function             
 # set
 animals = ['chat', 'chat', 'chien', 'tigre', 'chien', 'chien']

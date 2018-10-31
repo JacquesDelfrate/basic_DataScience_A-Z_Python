@@ -14,14 +14,20 @@ plt_node = plt.node()
 
 # input data
 if plt_node == 'jdelfrate':
-    inputData = r'D:\udemy\Python Basics A-Z\data\guns.csv'
+    # guns
+    inputGuns = r'D:\udemy\Python Basics A-Z\data\guns.csv'
+    # census
+    inputCensus = r'D:\udemy\Python Basics A-Z\data\census.csv'
 else:
-    inputData = '/home/jdelfrate/Documents/basics_python_data/guns.csv'
-    
+    # guns
+    inputGuns = '/home/jdelfrate/Documents/basics_python_data/guns.csv'
+    # census
+    inputCensus = '/home/jdelfrate/Documents/basics_python_data/census.csv'
+   
 # read data csv file
-guns_data = pd.read_csv(inputData, sep=',')
+guns_data = pd.read_csv(inputGuns, sep=',')
 # get data frame header into
-hdr = list(guns_data.columns.values)
+hdr_guns = list(guns_data.columns.values)
 
 # column year
 year_data = guns_data.loc[:,'year'].values
@@ -60,3 +66,38 @@ for race in race_data:
     if race not in race_count:
         race_count[race] = 0
     race_count[race] += 1
+
+# Read census
+census_data = pd.read_csv(inputCensus, sep = ',')
+
+# dictionnary mapping
+mapping = {'Asian/Pacific Islander': 15159516+674625, 'Black': 40250635,\
+           'Native American/Native Alaskan': 3739506, 'Hispanic': 44618105, 'White': 197318956}
+        
+# ratio
+ratio = {}
+for race in race_count:
+    ratio[race] = round(race_count[race]/mapping[race]*100000)
+
+print(ratio)
+
+# Filter by homidice
+intents = list(guns_data.loc[:,'intent'].values)
+# count homicide per race
+homicide_counts = {}
+for x, race in enumerate(race_data):
+    if intents[x] == 'Homicide':
+        if race not in homicide_counts:
+            homicide_counts[race] = 0
+        homicide_counts[race] += 1
+
+print(homicide_counts)
+
+# ratio homicide per race
+homicide_ratio = {}
+for race, count in homicide_counts.items():
+    if race not in homicide_ratio:
+        homicide_ratio[race] = 0
+    homicide_ratio[race] = round(count/mapping[race]*100000)
+
+print(homicide_ratio)            
